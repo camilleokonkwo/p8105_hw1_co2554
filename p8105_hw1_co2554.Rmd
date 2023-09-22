@@ -5,10 +5,9 @@ due date: "2023-09-23"
 output: github_document
 ---
 
-Let's load up the `moderndive` library and open the `early_weather_data` dataset. 
+Let's load up the `moderndive` library and open the `early_january_weather` dataset. 
 
-```{r}
-library(tibble)
+```{r, echo = FALSE, message = FALSE}
 library(tidyverse)
 library(moderndive)
 data("early_january_weather")
@@ -20,13 +19,15 @@ The `early_january_weather` dataset contains weather statistics between 01/01/20
 
 ### Let's make a scatterplot of `temp`(y) vs. `time_hour`(x).
 
-```{r}
+```{r, results = FALSE}
 data.frame("early_january_weather")
 x = early_january_weather[["time_hour"]]
 y = early_january_weather[["temp"]]
 
 ggplot(early_january_weather, aes(x = x, y = y, color = humid)) + geom_point()
+```
 
+```{r, echo = FALSE}
 ggsave("scatter_plot.pdf", height = 4, width = 6)
 ```
 
@@ -34,7 +35,7 @@ ggsave("scatter_plot.pdf", height = 4, width = 6)
 
 # Problem 2
 
-### Let's create a dataframe using `library(tibble)`.
+### Let's create a dataframe with random variables.
 
 ```{r}
 set.seed(12345)
@@ -47,9 +48,9 @@ random_df = tibble(
 )
 ```
 
-Let's pull the variables we established above out the dataframe so we able to take their means.
+#### Let's pull the variables we established above out the dataframe so we're able to take their means.
 
-```{r}
+```{r random_df_means}
 mean_norm_samp = mean(pull(random_df, norm_samp))
 mean_vec_logical = mean(pull(random_df, vec_logical))
 mean_vec_char = mean(pull(random_df, vec_char))
@@ -58,9 +59,9 @@ mean_vec_factor = mean(pull(random_df, vec_factor))
 
 We are not able to take the mean of `vec_char` and `vec_factor` because they are not numeric variables. 
 
-Let's convert all of the variables to numeric variables to see if we can solve this problem. 
+#### Let's convert all of the variables to numeric variables to see if we can solve this problem. 
 
-```{r}
+```{r, results = FALSE}
 as.numeric(pull(random_df, vec_logical))
 as.numeric(pull(random_df, vec_char))
 as.numeric(pull(random_df, vec_factor))
