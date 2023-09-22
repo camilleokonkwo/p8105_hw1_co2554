@@ -8,6 +8,7 @@ output: github_document
 Let's load up the `moderndive` library and open the `early_weather_data` dataset. 
 
 ```{r}
+library(tibble)
 library(tidyverse)
 library(moderndive)
 data("early_january_weather")
@@ -29,4 +30,40 @@ ggplot(early_january_weather, aes(x = x, y = y, color = humid)) + geom_point()
 ggsave("scatter_plot.pdf", height = 4, width = 6)
 ```
 
-`time_hour` and `temp` appear have a positively correlated relationship. as the `time_hour` increases, `temp` also increases.
+`time_hour` and `temp` appear have a positively correlated relationship. As the `time_hour` increases, `temp` also increases.
+
+# Problem 2
+
+### Let's create a dataframe using `library(tibble)`.
+
+```{r}
+set.seed(12345)
+
+random_df = tibble(
+  norm_samp = rnorm(10, sd =1),
+  vec_logical = norm_samp > 0,
+  vec_char = c("Camille", "is", "the", "best", "data", "science", "student", "at", "Columbia", "University"),
+  vec_factor = factor(rep(c("sometimes", "always", "never"), length.out = 10))
+)
+```
+
+Let's pull the variables we established above out the dataframe so we able to take their means.
+
+```{r}
+mean_norm_samp = mean(pull(random_df, norm_samp))
+mean_vec_logical = mean(pull(random_df, vec_logical))
+mean_vec_char = mean(pull(random_df, vec_char))
+mean_vec_factor = mean(pull(random_df, vec_factor))
+```
+
+We are not able to take the mean of `vec_char` and `vec_factor` because they are not numeric variables. 
+
+Let's convert all of the variables to numeric variables to see if we can solve this problem. 
+
+```{r}
+as.numeric(pull(random_df, vec_logical))
+as.numeric(pull(random_df, vec_char))
+as.numeric(pull(random_df, vec_factor))
+```
+
+When we try to apply the `as.numeric` function to `vec_logical`, it is able to to translate as a binary condition. When applied to `vec_factor` it is able to be translated to a categorical variable with three levels. However, `vec_char` contains nominal datapoints, so it not able to be translated to a numerical variable because the nominal data points have no meaning. 
